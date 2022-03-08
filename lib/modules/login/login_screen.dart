@@ -63,9 +63,9 @@ class LoginScreen extends StatelessWidget {
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       colors: [
-                        Colors.green.shade900,
-                        Colors.green.shade500,
-                        Colors.green.shade400,
+                        Colors.blue.shade900,
+                        Colors.blue.shade500,
+                        Colors.blue.shade400,
                       ]
                   )
               ),
@@ -172,18 +172,19 @@ class LoginScreen extends StatelessWidget {
                               ConditionalBuilder(
                                 condition:state is! LoginLoadingState  ,
                                 fallback:(context) =>Center(child: CircularProgressIndicator()) ,
-                                builder:(context) => Container(
+                                builder:(context) =>
+                                    Container(
                                   margin: const EdgeInsets.symmetric(horizontal: 50),
 
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(50),
-                                      color: Colors.green[800]
+                                      color: Colors.blue[800]
                                   ),
                                   child: Material(
                                     color: Colors.transparent,
                                     child: InkWell(
-                                      highlightColor: Colors.lightGreenAccent,
-                                      splashColor: Colors.green[800],
+                                      highlightColor: Colors.lightBlueAccent,
+                                      splashColor: Colors.blue[800],
                                       borderRadius: BorderRadius.circular(50),
                                       onTap: () {
                                         print('1');
@@ -204,7 +205,7 @@ class LoginScreen extends StatelessWidget {
                                         //     color: Colors.green[800]
                                         // ),
                                         child: const Center(
-                                          child: Text("Login",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                                          child: Text("Sign In",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                                         ),
 
                                       ),
@@ -213,68 +214,109 @@ class LoginScreen extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 30),
-                              // #login SNS
+                              // #Easy Sign Up
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 50),
+
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: Colors.grey[900]
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    highlightColor: Colors.grey[500],
+                                    splashColor: Colors.grey[900],
+                                    borderRadius: BorderRadius.circular(50),
+                                    onTap: () {
+
+
+
+
+
+                                    },
+
+                                    child: Container(
+                                      height: 50,
+                                      width: double.infinity,
+                                      // width: ,
+                                      // margin: const EdgeInsets.symmetric(horizontal: 50),
+                                      // decoration: BoxDecoration(
+                                      //     borderRadius: BorderRadius.circular(50),
+                                      //     color: Colors.green[800]
+                                      // ),
+                                      child: const Center(
+                                        child: Text("Easy Sign Up",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                                      ),
+
+                                    ),
+                                  ),
+                                ),
+                              ),
                               TextButton(
 
                                   onPressed: () { navigateTo(context: context,widget: RegisterScreen() ); },
-                                  child: const Text("Register(New User)",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold),)),
+                                  child: const Text("Reset Password",style: TextStyle(
+                                      color: Colors.blueAccent,
+                                      fontWeight: FontWeight.bold
+                                  ),)),
                               const SizedBox(height: 40),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(50),
-                                        color: Colors.blue[800],
-
-                                      ),
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        child: InkWell (
-                                          highlightColor: Colors.lightBlueAccent,
-                                          splashColor: Colors.blue[800],
-                                          borderRadius: BorderRadius.circular(50),
-                                          onTap: (){},
-                                          child: Container(
-                                            height: 50,
-
-
-                                            child: const Center(
-                                              child: Text("Facebook",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 30),
-                                  Expanded(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(50),
-                                        color: Colors.red[900],
-                                      ),
-
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        child: InkWell(
-                                          onTap: (){},
-                                          highlightColor: Colors.redAccent,
-                                          splashColor: Colors.red[900],
-                                          borderRadius: BorderRadius.circular(50),
-                                          child: Container(
-                                            height: 50,
-                                            child: const Center(
-                                              child: Text("Gmail",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     Expanded(
+                              //       child: Container(
+                              //
+                              //         decoration: BoxDecoration(
+                              //           borderRadius: BorderRadius.circular(50),
+                              //           color: Colors.blue[800],
+                              //
+                              //         ),
+                              //         child: Material(
+                              //           color: Colors.transparent,
+                              //           child: InkWell (
+                              //             highlightColor: Colors.lightBlueAccent,
+                              //             splashColor: Colors.blue[800],
+                              //             borderRadius: BorderRadius.circular(50),
+                              //             onTap: (){},
+                              //             child: Container(
+                              //               height: 50,
+                              //
+                              //
+                              //               child: const Center(
+                              //                 child: Text("Facebook",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                              //               ),
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     const SizedBox(width: 30),
+                              //     Expanded(
+                              //       child: Container(
+                              //         decoration: BoxDecoration(
+                              //           borderRadius: BorderRadius.circular(50),
+                              //           color: Colors.red[900],
+                              //         ),
+                              //
+                              //         child: Material(
+                              //           color: Colors.transparent,
+                              //           child: InkWell(
+                              //             onTap: (){},
+                              //             highlightColor: Colors.redAccent,
+                              //             splashColor: Colors.red[900],
+                              //             borderRadius: BorderRadius.circular(50),
+                              //             child: Container(
+                              //               height: 50,
+                              //               child: const Center(
+                              //                 child: Text("Gmail",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                              //               ),
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),

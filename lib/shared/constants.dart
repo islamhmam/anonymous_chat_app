@@ -10,7 +10,7 @@ UserModel? userModel;
 void signOut(context)
 {
   CashHelper.removeData(
-    key: 'token',
+    key: 'uid',
   ).then((value)
   {
     if (value)

@@ -43,68 +43,30 @@ class HomeCubit extends Cubit<HomeStates>{
 
   }
 
+  String uuid=FirebaseAuth.instance.currentUser!.uid.toString();
 
   List<UserModel> chatUsers=[];
 
-  void getChatUsers() {
+  Future<void> getChatUsers() async {
 
     emit(GetChatUsersLoadingState());
     if(chatUsers.length ==0) {
       FirebaseFirestore.instance
           .collection('users')
-          .get()
-          .then((value) {
+          .doc(uuid)
+          .collection('chats')
+          .get().then((value) {
         value.docs.forEach((element) async {
           print('id ------------------------------------------------------');
+          print(element.id);
 
-          // var collection = FirebaseFirestore.instance
-          //                                   .collection('users')
-          //                                   .doc(uid).collection('chats');
-          //
-          //
-          // var querySnapshots = await collection.get();
-          // for (var snapshot in querySnapshots.docs) {
-          //   String documentID = snapshot.id; // <-- Document ID
-          //   print('###########################' + documentID);
-          //
-          // }
+         FirebaseFirestore.instance
+          .collection('users')
+          .doc(element.id)
+          .get().then((value) {
 
-String uuid=FirebaseAuth.instance.currentUser!.uid.toString();
-
-// print(uuid);
-
-          FirebaseFirestore.instance
-              .collection('users')
-              .doc(uuid)
-              .collection('chats')
-              .get().then((value) {
-
-                  print('inside 11111111111111111111111111111111111111111111');
-                  value.docs.forEach((element){
-
-                    print(element.id);
-
-                  });
-
-
-            // for (var snapshot in value.docs) {
-            //   print('inside 222222222222222222222222222222222222222222222222222');
-            //
-            //   String documentID = snapshot.id; // <-- Document ID
-            //     print('###########################' + documentID);
-            //
-            //   }
-          });
-
-
-
-
-
-            chatUsers.add(UserModel.fromJson(element.data()));
-
-
-
-
+            chatUsers.add(UserModel.fromJson(value.data()!));
+         });
 
         });
         emit(GetChatUsersSuccessState());
@@ -113,9 +75,11 @@ String uuid=FirebaseAuth.instance.currentUser!.uid.toString();
         emit(GetChatUsersErrorState(error));
       });
     }
+
     print(chatUsers.length);
 
   }
+
 
 
 }

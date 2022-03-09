@@ -57,6 +57,7 @@ class ChatDetailsCubit extends Cubit<ChatDetailsStates>{
         .listen((event) {
       messages=[];
       event.docs.forEach((element) {
+
         messages.add(MessageModel.fromJson(element.data()));
       });
       emit(ChatDetailsGetMessagesSuccessState());
@@ -101,7 +102,8 @@ class ChatDetailsCubit extends Cubit<ChatDetailsStates>{
           .doc(userId)
           .collection('chats')
           .doc(receiverId).set({
-        'chatsId':receiverId , // John Doe
+        'chatsId':receiverId ,
+
       });
       emit(ChatDetailsSendMessageSuccessState());
     })

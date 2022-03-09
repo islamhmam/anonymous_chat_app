@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../models/style_model.dart';
 import '../../../models/user_model.dart';
@@ -57,21 +58,23 @@ class StyleCubit extends Cubit<StyleStates>{
   }
 
 
+  UserModel? userModel;
 
 
   String userId=FirebaseAuth.instance.currentUser!.uid.toString();
-  UserModel? userModel;
 
   void getUserData() {
+    emit(GetUserDataLoadingStyleState());
 
     FirebaseFirestore.instance.collection('users').doc(userId).get().then((value) {
       userModel = UserModel.fromJson(value.data()!);
       print(value.data());
       uid=userId;
-      emit(GetUserDataSuccessState());
+      emit(GetUserDataSuccessStyleState());
     }).catchError((onError) {
       print(onError.toString());
-      emit(GetUserDataErrorState(onError.toString()));
+      Fluttertoast.showToast(msg: onError.toString());
+      emit(GetUserDataErrorStyleState(onError.toString()));
     });
 
   }
@@ -100,11 +103,10 @@ class StyleCubit extends Cubit<StyleStates>{
     );
     FirebaseFirestore.instance
         .collection('users')
-        .doc(userModel!.uid)
+        .doc(globalUserModel!.uid)
         .update(model.toMap())
         .then((value) {
       print('               userData  update success');
-      getUserData();
       print('                 get after update userData success');
     }).catchError((error) {
       print('                 update Error');

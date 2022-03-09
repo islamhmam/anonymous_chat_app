@@ -50,9 +50,9 @@ class RegisterScreen extends StatelessWidget {
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       colors: [
-                        Colors.green.shade900,
-                        Colors.green.shade500,
-                        Colors.green.shade400,
+                        Colors.blue.shade900,
+                        Colors.blue.shade500,
+                        Colors.blue.shade400,
                       ]
                   )
               ),
@@ -60,17 +60,36 @@ class RegisterScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 60),
                   // #login, #welcome
                   Padding(
                     padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const[
-                        Text("Register",style: TextStyle(color: Colors.white,fontSize: 40),),
-                        SizedBox(height: 10,),
-                        Text("Your Gate to Private Chating",style: TextStyle(color: Colors.white,fontSize: 20),),
-                      ],
+                    child: Expanded(
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundImage:  AssetImage('images/logo.png'),
+
+                          ),
+                          SizedBox(width: 10,),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const[
+                                Text("Register",style: TextStyle(color: Colors.white,fontSize: 40),),
+                                SizedBox(height: 10,),
+                                Text(
+                                  "Your Gate to Private Chating",
+                                  style: TextStyle(color: Colors.white,fontSize: 20),
+                                  overflow: TextOverflow.ellipsis, // default is .clip
+                                  maxLines: 4,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -176,19 +195,19 @@ class RegisterScreen extends StatelessWidget {
 
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(50),
-                                      color: Colors.green[800]
+                                      color: Colors.blue[800]
                                   ),
                                   child: Material(
                                     color: Colors.transparent,
                                     child: InkWell(
-                                      highlightColor: Colors.lightGreenAccent,
-                                      splashColor: Colors.green[800],
+                                      highlightColor: Colors.lightBlueAccent,
+                                      splashColor: Colors.blue[800],
                                       borderRadius: BorderRadius.circular(50),
                                       onTap: () {
                                         if(formKey.currentState!.validate()) {
                                           RegisterCubit.get(context).userRegister(
-                                            email: emailController.text,
-                                            password: passwordController.text,
+                                            email: emailController.text.trim(),
+                                            password: passwordController.text.trim(),
 
                                           );
 

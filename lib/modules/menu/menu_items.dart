@@ -22,7 +22,7 @@ static  const MenuItem EditProfileItem=  MenuItem(
 );
 
 static const MenuItem shareItem=  MenuItem(
-       itemName: 'Share Link',
+       itemName: 'Share Private Chat Link',
        itemIcon: Icons.share,);
 
 static const MenuItem signOutItem=  MenuItem(

@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:anonymous/models/user_model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../models/message_model.dart';
 import 'chat_detail_cubit/chat_detail_cubit.dart';
@@ -97,13 +98,18 @@ class ChatDetails extends StatelessWidget {
                           child: MaterialButton(
                             minWidth: 1,
                             onPressed: () {
-                              ChatDetailsCubit.get(context).sendMessag(
+                              if(messageController.text.trim().isEmpty){
+                                Fluttertoast.showToast(msg: 'Write Message !!!');
+                              }else{ 
+                                ChatDetailsCubit.get(context).sendMessag(
                                   receiverId: userModel.uid!,
                                   text: messageController.text,
                                   dateTime: DateTime.now().toString());
                               messageController.clear();
                               ChatDetailsCubit.get(context).scrollDown(listController);
+                              }
 
+                         
                             },
                             child: Icon(Icons.send,
                               color: Colors.white,
@@ -136,7 +142,7 @@ class ChatDetails extends StatelessWidget {
         child: Container(
             padding: EdgeInsets.only(
               top: 10,
-              bottom: 3,
+              bottom: 10,
               left: 15,
               right: 15,
             ),
@@ -161,16 +167,16 @@ class ChatDetails extends StatelessWidget {
                 ),
                 ),
                 SizedBox(height: 1,),
-
-                Row(
-                  children: [
-                    Icon(Icons.check_circle,
-                    size: 15,
-                      color: Colors.grey,
-                    ),
-                  ],
-                  mainAxisSize: MainAxisSize.min,
-                )
+          //seen message
+                // Row(
+                //   children: [
+                //     Icon(Icons.check_circle,
+                //     size: 15,
+                //       color: Colors.grey,
+                //     ),
+                //   ],
+                //   mainAxisSize: MainAxisSize.min,
+                // )
               ],
             )),
       );

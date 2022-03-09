@@ -5,6 +5,7 @@ class MessageModel{
   String? receiverId;
   String? dateTime;
   String? text;
+  bool? isRead;
 
 
   MessageModel({
@@ -12,6 +13,7 @@ class MessageModel{
     this.receiverId,
     this.dateTime,
     this.text,
+    this.isRead
 
   });
 
@@ -21,6 +23,7 @@ class MessageModel{
     receiverId = json['receiverId'];
     dateTime = json['dateTime'];
     text = json['text'];
+    isRead = json['isRead'];
 
   }
 
@@ -30,6 +33,7 @@ class MessageModel{
       'receiverId':receiverId,
       'dateTime':dateTime,
       'text':text,
+      'isRead':isRead,
 
     };
 

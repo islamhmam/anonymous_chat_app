@@ -60,6 +60,7 @@ class MyApp extends StatelessWidget {
             listener: (context, state) {},
             builder: (context , state){
               return MaterialApp(
+                debugShowCheckedModeBanner: false,
                 title: 'Flutter Demo',
                 theme: ThemeData(
 

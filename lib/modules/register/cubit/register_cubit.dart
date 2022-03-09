@@ -1,3 +1,4 @@
+import 'package:anonymous/shared/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,16 +52,16 @@ class RegisterCubit extends Cubit<RegisterStates> {
 
   }){
     emit(CreateUserLoadingState());
-    UserModel model=UserModel(
+     globalUserModel=UserModel(
       email: email,
       uid: uid,
       imageUrl: 'https://firebasestorage.googleapis.com/v0/b/chat-me-app-be3e1.appspot.com/o/animals_photos%2Flion.png?alt=media&token=23f5dfbf-da93-4fc5-ac8f-afbbc09a037a',
-      name: 'The Lion',
+      name: 'Write Name',
     );
 
     FirebaseFirestore.instance
         .collection('users').doc(uid)
-        .set(model.toMap())
+        .set(globalUserModel!.toMap())
         .then((value) {
       print('User Created################################');
       emit(CreateUserSuccessState());

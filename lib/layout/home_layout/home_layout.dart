@@ -42,7 +42,7 @@ class _HomeLayoutState extends State<HomeLayout> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit()..getAllUsers()..getChatUsers(),
+      create: (context) => HomeCubit()..getChatUsers()..getAllUsers(),
       child: BlocConsumer<HomeCubit,HomeStates>(
         listener: (context, state) {
         },
@@ -78,11 +78,21 @@ class _HomeLayoutState extends State<HomeLayout> {
               body: TabBarView(
                 children: [
                            randomUsers(context,HomeCubit.get(context).users),
-                           randomUsers(context,HomeCubit.get(context).chatUsers),
+                           chatUsers(context,HomeCubit.get(context).chatUsers),
 
 
                 ],
               ) ,
+              // floatingActionButton: FloatingActionButton(
+              //     onPressed: (){
+              //       setState(() {
+              //         HomeCubit.get(context).getChatUsers();
+              //
+              //       });
+              //
+              //     },
+              // child: Icon(Icons.refresh),
+              // ),
 
             ),
           );
@@ -99,19 +109,122 @@ class _HomeLayoutState extends State<HomeLayout> {
 
   Widget randomUsers(context , List<UserModel> users)=>  RefreshIndicator(
     onRefresh: () async{
-      await HomeCubit.get(context).getChatUsers();
+      HomeCubit.get(context).getAllOneUsers();
     },
     child: ConditionalBuilder(
       condition:
     users.length > 0
       ,
-      fallback:(context) => Center(child: CircularProgressIndicator(),) ,
+      fallback:(context) => Center(
+
+        child:SingleChildScrollView(
+          physics:BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()) ,
+          child: Container(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 40.0, left: 30,right: 30,bottom: 20),
+              child: Expanded(child: Text('Refresh By Sliding Down',
+                overflow: TextOverflow.ellipsis, // default is .clip
+                maxLines: 4,
+              )),
+            ),
+            height: MediaQuery.of(context).size.height,
+
+          ),
+
+
+        ),
+
+
+        //   MaterialButton(
+        //   color: Colors.blueAccent,
+        //   child: Text('Refresh',
+        //   style: TextStyle(
+        //     color: Colors.white,
+        //     fontWeight: FontWeight.bold,
+        //   ),
+        //   ),
+        //   onPressed: (){
+        //     setState(() {
+        //       HomeCubit.get(context).getChatUsers();
+        //       Fluttertoast.showToast(msg: 'Send a Message to any User');
+        //
+        //
+        //     });
+        //   },
+        // ),
+
+      ) ,
       builder: (context) => ListView.separated(
         physics:  BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics()),
       // shrinkWrap: true,
           itemBuilder: (context, index) {
             return buildChatItem(users[index],context);
+          },
+          separatorBuilder:(context, index) => myDivider(),
+          itemCount: users.length
+      ) ,
+
+
+    ),
+  );
+
+  Widget chatUsers(context , List<UserModel> users)=>  RefreshIndicator(
+    onRefresh: () async{
+      HomeCubit.get(context).getChatUsers();
+
+
+
+    },
+    child: ConditionalBuilder(
+      condition:
+    users.length > 0
+      ,
+      fallback:(context) => Center(
+
+        child:SingleChildScrollView(
+            physics:BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()) ,
+            child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 40.0, left: 30,right: 30,bottom: 20),
+                  child: Expanded(child: Text('Send New Message to any User then Refresh By Sliding Down.',
+                    overflow: TextOverflow.ellipsis, // default is .clip
+                    maxLines: 4,
+                  )),
+                ),
+                 height: MediaQuery.of(context).size.height,
+
+            ),
+
+
+        ),
+
+
+      //   MaterialButton(
+      //   color: Colors.blueAccent,
+      //   child: Text('Refresh',
+      //   style: TextStyle(
+      //     color: Colors.white,
+      //     fontWeight: FontWeight.bold,
+      //   ),
+      //   ),
+      //   onPressed: (){
+      //     setState(() {
+      //       HomeCubit.get(context).getChatUsers();
+      //       Fluttertoast.showToast(msg: 'Send a Message to any User');
+      //
+      //
+      //     });
+      //   },
+      // ),
+
+      ) ,
+      builder: (context) => ListView.separated(
+        physics:  BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics()),
+      // shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return buildLastChatItem(users[index],context,);
           },
           separatorBuilder:(context, index) => myDivider(),
           itemCount: users.length
@@ -136,19 +249,21 @@ class _HomeLayoutState extends State<HomeLayout> {
             backgroundImage:  CachedNetworkImageProvider('${model.imageUrl}'),
 
           ),
-            Padding(
-              padding: const EdgeInsetsDirectional.only(
-                bottom: 0,
-                end: 0,),
-              child: CircleAvatar(
-                radius: 8.0,
-                backgroundColor: Colors.white,
-                child: CircleAvatar(
-                  radius: 6.0,
-                  backgroundColor: Colors.green,
-                ),
-              ),
-            ),
+
+            //Active Circle
+            // Padding(
+            //   padding: const EdgeInsetsDirectional.only(
+            //     bottom: 0,
+            //     end: 0,),
+            //   child: CircleAvatar(
+            //     radius: 8.0,
+            //     backgroundColor: Colors.white,
+            //     child: CircleAvatar(
+            //       radius: 6.0,
+            //       backgroundColor: Colors.green,
+            //     ),
+            //   ),
+            // ),
 
 
           ]
@@ -158,6 +273,117 @@ class _HomeLayoutState extends State<HomeLayout> {
           child: Text('${model.name}',
             style: Theme.of(context).textTheme.subtitle1,),
         ),
+
+
+      ],),
+    ),
+  );
+
+
+  Widget buildLastChatItem(UserModel model ,BuildContext context1, ) =>InkWell(
+    onTap: (){
+      navigateTo(context: context1, widget: ChatDetails(model));
+    },
+    child: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(children: [
+        Stack(
+            alignment: AlignmentDirectional.bottomEnd,
+            children: [
+          CircleAvatar(
+            radius: 25,
+            backgroundImage:  CachedNetworkImageProvider('${model.imageUrl}'),
+
+          ),
+
+            //Active Circle
+            // Padding(
+            //   padding: const EdgeInsetsDirectional.only(
+            //     bottom: 0,
+            //     end: 0,),
+            //   child: CircleAvatar(
+            //     radius: 8.0,
+            //     backgroundColor: Colors.white,
+            //     child: CircleAvatar(
+            //       radius: 6.0,
+            //       backgroundColor: Colors.green,
+            //     ),
+            //   ),
+            // ),
+
+
+          ]
+        ),
+        SizedBox(width: 20,),
+        Expanded(
+          child: Text('${model.name}',
+            style: Theme.of(context1).textTheme.subtitle1,
+          overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+          ),
+        ),
+        IconButton(
+          onPressed: (){
+
+            showDialog(
+              context: context1,
+              builder: (context1) =>BlocProvider(
+                create: (context1) => HomeCubit(),
+                child: BlocConsumer<HomeCubit,HomeStates>(
+                  listener: (context1, state) {
+                  },
+                  builder:(context1, state){
+                    return AlertDialog(
+                      title: Text('Confirm Deleting?'),
+                      content: Expanded(
+                        child: Text('-- The Messages Will not be Deleted till The Other User Delete It Too.\n-- but The Conversation will be Deleted from last Chats Section.',
+                        overflow: TextOverflow.ellipsis,
+                          maxLines: 10,
+                          
+                        ),
+                      ),
+                      actions: [
+                        MaterialButton(
+                          onPressed: (){
+
+
+                              HomeCubit.get(context1).deleteChatItem( model);
+
+                              Fluttertoast.showToast(msg: 'Refresh the Page After Delete');
+
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Yes',
+                            style: TextStyle(
+                                color: Colors.white
+                            ),
+                          ),
+                          color: Colors.blueAccent,
+                        ),
+                        MaterialButton(
+
+                          onPressed: (){
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('No',
+                            style: TextStyle(
+                                color: Colors.white
+                            ),
+                          ),
+                          color: Colors.blueAccent,
+                        ),
+                      ],
+                    );
+                  } ,
+
+                ),
+              )
+            );
+          },
+          icon: Icon(Icons.delete_forever_rounded,
+          size: 30,),
+        )
+
 
 
       ],),
@@ -223,7 +449,14 @@ class _HomeLayoutState extends State<HomeLayout> {
         .doc(seperatedLink[1])
         .get().then((value) {
      UserModel userModel= UserModel.fromJson(value.data()!);
-     navigateTo(context: context, widget: ChatDetails(userModel));
+     if(uid != seperatedLink[1]) {
+       navigateTo(context: context, widget: ChatDetails(userModel));
+     }else{
+       Fluttertoast.showToast(msg: 'You Cant Chat To Your Self \n Click on Other Invitation');
+
+     }
+
+
     }).catchError((error){
       Fluttertoast.showToast(msg: error.toString());
     });
@@ -251,7 +484,7 @@ class _HomeLayoutState extends State<HomeLayout> {
       socialMetaTagParameters: SocialMetaTagParameters(
           description: '',
           imageUrl:
-          Uri.parse("https://firebasestorage.googleapis.com/v0/b/chat-me-app-be3e1.appspot.com/o/icons%26photos%2F5377826.png?alt=media&token=491a9400-4133-4b9d-8053-2acd9de6f0ae"),
+          Uri.parse("https://firebasestorage.googleapis.com/v0/b/chat-me-app-be3e1.appspot.com/o/icons%26photos%2Flogo.png?alt=media&token=6caf359f-43ca-459d-ad25-bbf36f0d78d2"),
           title: 'Anonymous Chat Invitation'),
     );
 
@@ -263,6 +496,8 @@ class _HomeLayoutState extends State<HomeLayout> {
     await Share.share(desc, subject: 'Anonymous Chat Invitation',);
 
   }
+
+
 
 
 

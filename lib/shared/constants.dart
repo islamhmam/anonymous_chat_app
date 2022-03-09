@@ -5,7 +5,7 @@ import 'network/local/cash_helper.dart';
 
 String token='';
 String uid='';
-UserModel? userModel;
+UserModel? globalUserModel;
 
 void signOut(context)
 {

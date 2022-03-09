@@ -10,10 +10,10 @@ class GetStylesErrorState extends StyleStates{
 
 class ChangeStyleIndexState extends StyleStates{}
 
-class GetUserDataSuccessState extends StyleStates{}
-class GetUserDataLoadingState extends StyleStates{}
-class GetUserDataErrorState extends StyleStates{
-  GetUserDataErrorState(error);
+class GetUserDataSuccessStyleState extends StyleStates{}
+class GetUserDataLoadingStyleState extends StyleStates{}
+class GetUserDataErrorStyleState extends StyleStates{
+  GetUserDataErrorStyleState(error);
 }
 
 class UpdateUserDataErrorState extends StyleStates{}

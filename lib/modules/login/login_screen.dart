@@ -2,6 +2,7 @@
 
 import 'package:anonymous/modules/login/cubit/login_cubit.dart';
 import 'package:anonymous/modules/login/cubit/login_states.dart';
+import 'package:anonymous/modules/reset_pass/reset_screen.dart';
 import 'package:anonymous/shared/components/components.dart';
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
@@ -77,12 +78,25 @@ class LoginScreen extends StatelessWidget {
                   // #login, #welcome
                   Padding(
                     padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const[
-                        Text("Login",style: TextStyle(color: Colors.white,fontSize: 40),),
-                        SizedBox(height: 10,),
-                        Text("Welcome Back",style: TextStyle(color: Colors.white,fontSize: 20),),
+                    child: Row(
+
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundImage:  AssetImage('images/logo.png'),
+
+                        ),
+                        SizedBox(width: 10,),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const[
+                              Text("Login",style: TextStyle(color: Colors.white,fontSize: 40),),
+                              SizedBox(height: 10,),
+                              Text("Welcome Back",style: TextStyle(color: Colors.white,fontSize: 20),),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -127,7 +141,7 @@ class LoginScreen extends StatelessWidget {
                                           validator: (String? value)
                                           {
                                             if(value!.isEmpty){
-                                              return'You Should Write User Name';
+                                              return'You Should Write Correct Email';
 
                                             }
                                           },
@@ -190,8 +204,9 @@ class LoginScreen extends StatelessWidget {
                                         print('1');
                                         if(formKey.currentState!.validate()) {
                                           LoginCubit.get(context).userLogin(
-                                              email: emailController.text,
-                                              password: passwordController.text);
+                                              email: emailController.text.trim(),
+                                              password: passwordController.text.trim()
+                                          );
                                         }
                                       },
 
@@ -230,7 +245,7 @@ class LoginScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(50),
                                     onTap: () {
 
-
+                                      navigateTo(context: context,widget: RegisterScreen() );
 
 
 
@@ -253,10 +268,13 @@ class LoginScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              const SizedBox(height: 20),
                               TextButton(
 
-                                  onPressed: () { navigateTo(context: context,widget: RegisterScreen() ); },
-                                  child: const Text("Reset Password",style: TextStyle(
+                                  onPressed: () {
+                                    navigateTo(context: context,widget: ResetScreen() );
+                                  },
+                                  child: const Text("Forgot Password?",style: TextStyle(
                                       color: Colors.blueAccent,
                                       fontWeight: FontWeight.bold
                                   ),)),

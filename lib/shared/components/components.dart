@@ -56,6 +56,7 @@ Widget defaultFormField({
   IconData? suffix,
   final Function()? suffixPressed,
 }) => TextFormField(
+
   controller: controller,
   keyboardType: type,
 

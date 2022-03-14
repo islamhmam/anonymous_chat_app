@@ -1,16 +1,16 @@
-# anonymous
+### Anonymous Chat App
 
-A new Flutter project.
 
-## Getting Started
+An Anonymous Chat Application that Make users  talk to each other without knowing the other.
+And you can Share your chat link anywhere for someone to come and click on the link and start talking to you without knowing his identity.
 
-This project is a starting point for a Flutter application.
+![Preview](/preview/1.jpg)
+![Preview](/preview/2.jpg)
+![Preview](/preview/3.jpg)
+![Preview](/preview/4.jpg)
+![Preview](/preview/5.jpg)
+![Preview](/preview/6.jpg)
+![Preview](/preview/7.jpg)
+![Preview](/preview/8.jpg)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Download From Google Play : 

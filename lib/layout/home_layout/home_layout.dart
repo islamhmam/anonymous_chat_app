@@ -155,11 +155,11 @@ class _HomeLayoutState extends State<HomeLayout> {
 
       ) ,
       builder: (context) => ListView.separated(
-        physics:  BouncingScrollPhysics(
+            physics:  BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics()),
       // shrinkWrap: true,
           itemBuilder: (context, index) {
-            return buildChatItem(users[index],context);
+            return buildLastChatItem(users[index],context);
           },
           separatorBuilder:(context, index) => myDivider(),
           itemCount: users.length
@@ -219,6 +219,7 @@ class _HomeLayoutState extends State<HomeLayout> {
       // ),
 
       ) ,
+
       builder: (context) => ListView.separated(
         physics:  BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics()),
@@ -234,50 +235,50 @@ class _HomeLayoutState extends State<HomeLayout> {
     ),
   );
 
-  Widget buildChatItem(UserModel model ,context) =>InkWell(
-    onTap: (){
-      navigateTo(context: context, widget: ChatDetails(model));
-    },
-    child: Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Row(children: [
-        Stack(
-            alignment: AlignmentDirectional.bottomEnd,
-            children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundImage:  CachedNetworkImageProvider('${model.imageUrl}'),
-
-          ),
-
-            //Active Circle
-            // Padding(
-            //   padding: const EdgeInsetsDirectional.only(
-            //     bottom: 0,
-            //     end: 0,),
-            //   child: CircleAvatar(
-            //     radius: 8.0,
-            //     backgroundColor: Colors.white,
-            //     child: CircleAvatar(
-            //       radius: 6.0,
-            //       backgroundColor: Colors.green,
-            //     ),
-            //   ),
-            // ),
-
-
-          ]
-        ),
-        SizedBox(width: 20,),
-        Expanded(
-          child: Text('${model.name}',
-            style: Theme.of(context).textTheme.subtitle1,),
-        ),
-
-
-      ],),
-    ),
-  );
+  // Widget buildChatItem(UserModel model ,context) =>InkWell(
+  //   onTap: (){
+  //     navigateTo(context: context, widget: ChatDetails(model));
+  //   },
+  //   child: Padding(
+  //     padding: const EdgeInsets.all(20.0),
+  //     child: Row(children: [
+  //       Stack(
+  //           alignment: AlignmentDirectional.bottomEnd,
+  //           children: [
+  //         CircleAvatar(
+  //           radius: 25,
+  //           backgroundImage:  CachedNetworkImageProvider('${model.imageUrl}'),
+  //
+  //         ),
+  //
+  //           //Active Circle
+  //           // Padding(
+  //           //   padding: const EdgeInsetsDirectional.only(
+  //           //     bottom: 0,
+  //           //     end: 0,),
+  //           //   child: CircleAvatar(
+  //           //     radius: 8.0,
+  //           //     backgroundColor: Colors.white,
+  //           //     child: CircleAvatar(
+  //           //       radius: 6.0,
+  //           //       backgroundColor: Colors.green,
+  //           //     ),
+  //           //   ),
+  //           // ),
+  //
+  //
+  //         ]
+  //       ),
+  //       SizedBox(width: 20,),
+  //       Expanded(
+  //         child: Text('${model.name}',
+  //           style: Theme.of(context).textTheme.subtitle1,),
+  //       ),
+  //
+  //
+  //     ],),
+  //   ),
+  // );
 
 
   Widget buildLastChatItem(UserModel model ,BuildContext context1, ) =>InkWell(
@@ -322,67 +323,272 @@ class _HomeLayoutState extends State<HomeLayout> {
             maxLines: 2,
           ),
         ),
-        IconButton(
-          onPressed: (){
+        PopupMenuButton(
+          shape: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: Colors.grey,
+                  width: 2
+              ),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          color: Colors.redAccent[100],
+          icon: Icon(Icons.menu,
+          color: Colors.red[900],
+              size: 30),
+            itemBuilder:(context){
+              List<MenuItem> menu =MenuItems.userMenu;
+            return menu.map((MenuItem menuItem){
+              return PopupMenuItem(
+                  child: ListTile(
+                    leading: Icon(menuItem.itemIcon),
+                    title: Text('${menuItem.itemName}'),
+                  ),
+                  value: menuItem.value,
+              );
+            }).toList();
+            },
+          onSelected: (value){
 
-            showDialog(
-              context: context1,
-              builder: (context1) =>BlocProvider(
-                create: (context1) => HomeCubit(),
-                child: BlocConsumer<HomeCubit,HomeStates>(
-                  listener: (context1, state) {
-                  },
-                  builder:(context1, state){
-                    return AlertDialog(
-                      title: Text('Confirm Deleting?'),
-                      content: Expanded(
-                        child: Text('-- The Messages Will not be Deleted till The Other User Delete It Too.\n-- but The Conversation will be Deleted from last Chats Section.',
-                        overflow: TextOverflow.ellipsis,
-                          maxLines: 10,
-                          
-                        ),
+            switch(value) {
+              case 1: {
+                showDialog(
+                    context: context1,
+                    builder: (context1) =>BlocProvider(
+                      create: (context1) => HomeCubit(),
+                      child: BlocConsumer<HomeCubit,HomeStates>(
+                        listener: (context1, state) {
+                        },
+                        builder:(context1, state){
+                          return AlertDialog(
+                            title: Text('Confirm Deleting?'),
+                            content: Expanded(
+                              child: Text('-- The Messages Will not be Deleted till The Other User Delete It Too.\n-- but The Conversation will be Deleted from last Chats Section.',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 10,
+
+                              ),
+                            ),
+                            actions: [
+                              MaterialButton(
+                                onPressed: (){
+
+
+                                  HomeCubit.get(context1).deleteChatItem( model);
+
+                                  Fluttertoast.showToast(msg: 'Refresh the Page After Delete');
+
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Yes',
+                                  style: TextStyle(
+                                      color: Colors.white
+                                  ),
+                                ),
+                                color: Colors.blueAccent,
+                              ),
+                              MaterialButton(
+
+                                onPressed: (){
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('No',
+                                  style: TextStyle(
+                                      color: Colors.white
+                                  ),
+                                ),
+                                color: Colors.blueAccent,
+                              ),
+                            ],
+                          );
+                        } ,
+
                       ),
-                      actions: [
-                        MaterialButton(
-                          onPressed: (){
+                    )
+                );
+              }
+              break;
 
+              case 2: {
+                showDialog(
+                    context: context1,
+                    builder: (context1) =>BlocProvider(
+                      create: (context1) => HomeCubit(),
+                      child: BlocConsumer<HomeCubit,HomeStates>(
+                        listener: (context1, state) {
+                        },
+                        builder:(context1, state){
+                          return AlertDialog(
+                            title: Text('Confirm Deleting?'),
+                            content: Expanded(
+                              child: Text('-- The Messages Will not be Deleted till The Other User Delete It Too.\n-- but The Conversation will be Deleted from last Chats Section.',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 10,
 
-                              HomeCubit.get(context1).deleteChatItem( model);
-
-                              Fluttertoast.showToast(msg: 'Refresh the Page After Delete');
-
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('Yes',
-                            style: TextStyle(
-                                color: Colors.white
+                              ),
                             ),
-                          ),
-                          color: Colors.blueAccent,
-                        ),
-                        MaterialButton(
+                            actions: [
+                              MaterialButton(
+                                onPressed: (){
 
-                          onPressed: (){
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('No',
-                            style: TextStyle(
-                                color: Colors.white
+
+                                  HomeCubit.get(context1).deleteChatItem( model);
+
+                                  Fluttertoast.showToast(msg: 'Refresh the Page After Delete');
+
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Yes',
+                                  style: TextStyle(
+                                      color: Colors.white
+                                  ),
+                                ),
+                                color: Colors.blueAccent,
+                              ),
+                              MaterialButton(
+
+                                onPressed: (){
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('No',
+                                  style: TextStyle(
+                                      color: Colors.white
+                                  ),
+                                ),
+                                color: Colors.blueAccent,
+                              ),
+                            ],
+                          );
+                        } ,
+
+                      ),
+                    )
+                );              }
+              break;
+              case 3: {
+                showDialog(
+                    context: context1,
+                    builder: (context1) =>BlocProvider(
+                      create: (context1) => HomeCubit(),
+                      child: BlocConsumer<HomeCubit,HomeStates>(
+                        listener: (context1, state) {
+                        },
+                        builder:(context1, state){
+                          return AlertDialog(
+                            title: Text('Confirm Deleting?'),
+                            content: Expanded(
+                              child: Text('-- The Messages Will not be Deleted till The Other User Delete It Too.\n-- but The Conversation will be Deleted from last Chats Section.',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 10,
+
+                              ),
                             ),
-                          ),
-                          color: Colors.blueAccent,
-                        ),
-                      ],
-                    );
-                  } ,
+                            actions: [
+                              MaterialButton(
+                                onPressed: (){
 
-                ),
-              )
-            );
+
+                                  HomeCubit.get(context1).deleteChatItem( model);
+
+                                  Fluttertoast.showToast(msg: 'Refresh the Page After Delete');
+
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Yes',
+                                  style: TextStyle(
+                                      color: Colors.white
+                                  ),
+                                ),
+                                color: Colors.blueAccent,
+                              ),
+                              MaterialButton(
+
+                                onPressed: (){
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('No',
+                                  style: TextStyle(
+                                      color: Colors.white
+                                  ),
+                                ),
+                                color: Colors.blueAccent,
+                              ),
+                            ],
+                          );
+                        } ,
+
+                      ),
+                    )
+                );            }
+            break;
+
+
+            }
+
           },
-          icon: Icon(Icons.delete_forever_rounded,
-          size: 30,),
-        )
+            ),
+
+
+        // IconButton(
+        //   onPressed: (){
+        //
+        //     showDialog(
+        //       context: context1,
+        //       builder: (context1) =>BlocProvider(
+        //         create: (context1) => HomeCubit(),
+        //         child: BlocConsumer<HomeCubit,HomeStates>(
+        //           listener: (context1, state) {
+        //           },
+        //           builder:(context1, state){
+        //             return AlertDialog(
+        //               title: Text('Confirm Deleting?'),
+        //               content: Expanded(
+        //                 child: Text('-- The Messages Will not be Deleted till The Other User Delete It Too.\n-- but The Conversation will be Deleted from last Chats Section.',
+        //                 overflow: TextOverflow.ellipsis,
+        //                   maxLines: 10,
+        //
+        //                 ),
+        //               ),
+        //               actions: [
+        //                 MaterialButton(
+        //                   onPressed: (){
+        //
+        //
+        //                       HomeCubit.get(context1).deleteChatItem( model);
+        //
+        //                       Fluttertoast.showToast(msg: 'Refresh the Page After Delete');
+        //
+        //                     Navigator.of(context).pop();
+        //                   },
+        //                   child: Text('Yes',
+        //                     style: TextStyle(
+        //                         color: Colors.white
+        //                     ),
+        //                   ),
+        //                   color: Colors.blueAccent,
+        //                 ),
+        //                 MaterialButton(
+        //
+        //                   onPressed: (){
+        //                     Navigator.of(context).pop();
+        //                   },
+        //                   child: Text('No',
+        //                     style: TextStyle(
+        //                         color: Colors.white
+        //                     ),
+        //                   ),
+        //                   color: Colors.blueAccent,
+        //                 ),
+        //               ],
+        //             );
+        //           } ,
+        //
+        //         ),
+        //       )
+        //     );
+        //   },
+        //   icon: Icon(Icons.delete_forever_rounded,
+        //   size: 30,),
+        // )
 
 
 

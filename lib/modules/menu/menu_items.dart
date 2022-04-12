@@ -15,6 +15,12 @@ static  List<MenuItem> SecondItemsMenu=[
     signOutItem
   ];
 
+static  List<MenuItem> userMenu=[
+  removeChat,
+  reportViolation,
+  blockUser
+  ];
+
 
 static  const MenuItem EditProfileItem=  MenuItem(
        itemName: 'Edit  Profile',
@@ -28,5 +34,25 @@ static const MenuItem shareItem=  MenuItem(
 static const MenuItem signOutItem=  MenuItem(
        itemName: 'Sign Out',
        itemIcon: Icons.logout_sharp,);
+
+
+
+
+
+static const MenuItem blockUser=  MenuItem(
+       itemName: 'Block',
+       itemIcon: Icons.block,
+        value: 1,
+);
+static const MenuItem reportViolation=  MenuItem(
+       itemName: 'Report violation',
+       itemIcon: Icons.report,
+        value: 2,
+);
+static const MenuItem removeChat=  MenuItem(
+       itemName: 'Remove Chat',
+       itemIcon: Icons.delete_forever_rounded,
+        value: 3,
+  );
 
 }

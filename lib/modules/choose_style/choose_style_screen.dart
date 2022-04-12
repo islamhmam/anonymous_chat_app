@@ -198,6 +198,7 @@ class ChooseStyleScreen extends StatelessWidget {
 
 
                               crossAxisCount: 3,
+                              
                               children: List.generate(StyleCubit.get(context).stylesList.length, (index) {
                                 return  buildStyle(StyleCubit.get(context).stylesList[index],context,index);
 

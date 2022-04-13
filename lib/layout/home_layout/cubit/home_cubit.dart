@@ -19,11 +19,30 @@ class HomeCubit extends Cubit<HomeStates>{
   String uuid=FirebaseAuth.instance.currentUser!.uid.toString();
 
   List<UserModel> users=[];
-  List<UserModel> reprted=[];
+  List<String> blocked=[];
+
+  Future<void> getBlocked() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uuid)
+        .collection('blocked')
+        .get()
+        .then((value) {
+          value.docs.forEach((element) {
+            blocked.add(element.data()['id']);
+          });
+    }).catchError((onError){
+          print(onError.toString());
+    });
+
+  }
 
 
-  void getAllUsers() {
+  Future<void> getAllUsers() async {
     print('user id ===========  ${uuid}');
+
+  await getBlocked();
+    int l=0;
 
     if(users.length ==0) {
       FirebaseFirestore.instance
@@ -32,11 +51,25 @@ class HomeCubit extends Cubit<HomeStates>{
           .then((value) {
         value.docs.forEach((element) {
           if(element.data()['uid'] != uid) {
+            bool flag = true;
 
-            users.add(UserModel.fromJson(element.data()));
+            for(int i =0 ; i< blocked.length ; i++){
+              if(element.data()['uid'] == blocked[i]) {
+                flag = false;
+              }
+            }
 
+            if(flag==true){
+              users.add(UserModel.fromJson(element.data()));
+              l++;
+            }
+
+            emit(GetAllUsersSuccessOneState());
           }
 
+          if(l==10){
+            return;
+          }
         });
 
         emit(GetAllUsersSuccessState());
@@ -48,9 +81,13 @@ class HomeCubit extends Cubit<HomeStates>{
 
 
   }
-  void getAllOneUsers() {
-    emit(GetAllUsersLoadingState());
 
+
+  Future<void> getAllOneUsers() async {
+    emit(GetAllUsersLoadingState());
+    await getBlocked();
+
+    int l=0;
     users.clear();
       FirebaseFirestore.instance
           .collection('users')
@@ -58,9 +95,24 @@ class HomeCubit extends Cubit<HomeStates>{
           .then((value) {
         value.docs.forEach((element) {
           if(element.data()['uid'] != uid) {
-            users.add(UserModel.fromJson(element.data()));
-            emit(GetAllUsersSuccessOneState());
+            bool flag = true;
 
+            for(int i =0 ; i< blocked.length ; i++){
+              if(element.data()['uid'] == blocked[i]) {
+                flag = false;
+              }
+            }
+
+            if(flag==true){
+              users.add(UserModel.fromJson(element.data()));
+              l++;
+            }
+
+            emit(GetAllUsersSuccessOneState());
+          }
+
+          if(l==10){
+            return;
           }
 
         });

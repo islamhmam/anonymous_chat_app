@@ -42,7 +42,7 @@ static const MenuItem signOutItem=  MenuItem(
 static const MenuItem blockUser=  MenuItem(
        itemName: 'Block',
        itemIcon: Icons.block,
-        value: 1,
+        value: 3,
 );
 static const MenuItem reportViolation=  MenuItem(
        itemName: 'Report violation',
@@ -52,7 +52,7 @@ static const MenuItem reportViolation=  MenuItem(
 static const MenuItem removeChat=  MenuItem(
        itemName: 'Remove Chat',
        itemIcon: Icons.delete_forever_rounded,
-        value: 3,
+        value: 1,
   );
 
 }

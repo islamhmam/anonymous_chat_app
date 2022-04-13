@@ -31,6 +31,7 @@ class HomeLayout extends StatefulWidget {
 class _HomeLayoutState extends State<HomeLayout> {
 
 
+  var reportController = TextEditingController();
 
   @override
   void initState() {
@@ -39,12 +40,14 @@ class _HomeLayoutState extends State<HomeLayout> {
     initDynamicLinks();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeCubit()..getChatUsers()..getAllUsers(),
       child: BlocConsumer<HomeCubit,HomeStates>(
         listener: (context, state) {
+
         },
         builder: (context, state) {
           return DefaultTabController(
@@ -83,16 +86,7 @@ class _HomeLayoutState extends State<HomeLayout> {
 
                 ],
               ) ,
-              // floatingActionButton: FloatingActionButton(
-              //     onPressed: (){
-              //       setState(() {
-              //         HomeCubit.get(context).getChatUsers();
-              //
-              //       });
-              //
-              //     },
-              // child: Icon(Icons.refresh),
-              // ),
+
 
             ),
           );
@@ -107,9 +101,11 @@ class _HomeLayoutState extends State<HomeLayout> {
     )  ;
   }
 
+
   Widget randomUsers(context , List<UserModel> users)=>  RefreshIndicator(
     onRefresh: () async{
       HomeCubit.get(context).getAllOneUsers();
+      return await Future.delayed(Duration(seconds: 2));
     },
     child: ConditionalBuilder(
       condition:
@@ -135,23 +131,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         ),
 
 
-        //   MaterialButton(
-        //   color: Colors.blueAccent,
-        //   child: Text('Refresh',
-        //   style: TextStyle(
-        //     color: Colors.white,
-        //     fontWeight: FontWeight.bold,
-        //   ),
-        //   ),
-        //   onPressed: (){
-        //     setState(() {
-        //       HomeCubit.get(context).getChatUsers();
-        //       Fluttertoast.showToast(msg: 'Send a Message to any User');
-        //
-        //
-        //     });
-        //   },
-        // ),
+
 
       ) ,
       builder: (context) => ListView.separated(
@@ -172,6 +152,7 @@ class _HomeLayoutState extends State<HomeLayout> {
   Widget chatUsers(context , List<UserModel> users)=>  RefreshIndicator(
     onRefresh: () async{
       HomeCubit.get(context).getChatUsers();
+      return await Future.delayed(Duration(seconds: 2));
 
 
 
@@ -235,50 +216,7 @@ class _HomeLayoutState extends State<HomeLayout> {
     ),
   );
 
-  // Widget buildChatItem(UserModel model ,context) =>InkWell(
-  //   onTap: (){
-  //     navigateTo(context: context, widget: ChatDetails(model));
-  //   },
-  //   child: Padding(
-  //     padding: const EdgeInsets.all(20.0),
-  //     child: Row(children: [
-  //       Stack(
-  //           alignment: AlignmentDirectional.bottomEnd,
-  //           children: [
-  //         CircleAvatar(
-  //           radius: 25,
-  //           backgroundImage:  CachedNetworkImageProvider('${model.imageUrl}'),
-  //
-  //         ),
-  //
-  //           //Active Circle
-  //           // Padding(
-  //           //   padding: const EdgeInsetsDirectional.only(
-  //           //     bottom: 0,
-  //           //     end: 0,),
-  //           //   child: CircleAvatar(
-  //           //     radius: 8.0,
-  //           //     backgroundColor: Colors.white,
-  //           //     child: CircleAvatar(
-  //           //       radius: 6.0,
-  //           //       backgroundColor: Colors.green,
-  //           //     ),
-  //           //   ),
-  //           // ),
-  //
-  //
-  //         ]
-  //       ),
-  //       SizedBox(width: 20,),
-  //       Expanded(
-  //         child: Text('${model.name}',
-  //           style: Theme.of(context).textTheme.subtitle1,),
-  //       ),
-  //
-  //
-  //     ],),
-  //   ),
-  // );
+
 
 
   Widget buildLastChatItem(UserModel model ,BuildContext context1, ) =>InkWell(
@@ -362,7 +300,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                           return AlertDialog(
                             title: Text('Confirm Deleting?'),
                             content: Expanded(
-                              child: Text('-- The Messages Will not be Deleted till The Other User Delete It Too.\n-- but The Conversation will be Deleted from last Chats Section.',
+                              child: Text('This Will Delete All Message For Sender and Receiver!',
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 10,
 
@@ -379,7 +317,7 @@ class _HomeLayoutState extends State<HomeLayout> {
 
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Yes',
+                                child: Text('Delete',
                                   style: TextStyle(
                                       color: Colors.white
                                   ),
@@ -391,7 +329,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                 onPressed: (){
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('No',
+                                child: Text('Cancel',
                                   style: TextStyle(
                                       color: Colors.white
                                   ),
@@ -418,15 +356,34 @@ class _HomeLayoutState extends State<HomeLayout> {
                         },
                         builder:(context1, state){
                           return AlertDialog(
-                            title: Text('Confirm Deleting?'),
+                            title: Text('Describe Violation?'),
                             content: Expanded(
-                              child: Text('-- The Messages Will not be Deleted till The Other User Delete It Too.\n-- but The Conversation will be Deleted from last Chats Section.',
-                                overflow: TextOverflow.ellipsis,
+                              child: TextField(
+                                controller: reportController,
+                                minLines: 1,
                                 maxLines: 10,
 
                               ),
                             ),
                             actions: [
+
+                              MaterialButton(
+                                onPressed: (){
+
+
+                                  HomeCubit.get(context1).blockUser( model);
+
+                                  Fluttertoast.showToast(msg: 'Refresh the Page After Block');
+
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Block',
+                                  style: TextStyle(
+                                      color: Colors.white
+                                  ),
+                                ),
+                                color: Colors.blueAccent,
+                              ),
                               MaterialButton(
                                 onPressed: (){
 
@@ -437,7 +394,7 @@ class _HomeLayoutState extends State<HomeLayout> {
 
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Yes',
+                                child: Text('Delete Chat',
                                   style: TextStyle(
                                       color: Colors.white
                                   ),
@@ -445,17 +402,20 @@ class _HomeLayoutState extends State<HomeLayout> {
                                 color: Colors.blueAccent,
                               ),
                               MaterialButton(
-
                                 onPressed: (){
+                                  HomeCubit.get(context1).reportViolation( model, reportController.text.toString());
+                                  Fluttertoast.showToast(msg: 'Report Send');
+
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('No',
+                                child: Text('Report',
                                   style: TextStyle(
                                       color: Colors.white
                                   ),
                                 ),
                                 color: Colors.blueAccent,
                               ),
+
                             ],
                           );
                         } ,
@@ -474,9 +434,9 @@ class _HomeLayoutState extends State<HomeLayout> {
                         },
                         builder:(context1, state){
                           return AlertDialog(
-                            title: Text('Confirm Deleting?'),
+                            title: Text('Confirm Block?'),
                             content: Expanded(
-                              child: Text('-- The Messages Will not be Deleted till The Other User Delete It Too.\n-- but The Conversation will be Deleted from last Chats Section.',
+                              child: Text('Confirm Block!',
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 10,
 
@@ -487,13 +447,13 @@ class _HomeLayoutState extends State<HomeLayout> {
                                 onPressed: (){
 
 
-                                  HomeCubit.get(context1).deleteChatItem( model);
+                                  HomeCubit.get(context1).blockUser( model);
 
-                                  Fluttertoast.showToast(msg: 'Refresh the Page After Delete');
+                                  Fluttertoast.showToast(msg: 'Refresh the Page After Block');
 
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Yes',
+                                child: Text('Confirm',
                                   style: TextStyle(
                                       color: Colors.white
                                   ),
@@ -505,7 +465,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                 onPressed: (){
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('No',
+                                child: Text('Cancel',
                                   style: TextStyle(
                                       color: Colors.white
                                   ),

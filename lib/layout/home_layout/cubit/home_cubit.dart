@@ -16,11 +16,15 @@ class HomeCubit extends Cubit<HomeStates>{
   HomeCubit( ) : super(HomeInitialState());
 
   static HomeCubit get(context)=>BlocProvider.of(context);
+  String uuid=FirebaseAuth.instance.currentUser!.uid.toString();
 
   List<UserModel> users=[];
+  List<UserModel> reprted=[];
+
 
   void getAllUsers() {
     print('user id ===========  ${uuid}');
+
     if(users.length ==0) {
       FirebaseFirestore.instance
           .collection('users')
@@ -28,7 +32,9 @@ class HomeCubit extends Cubit<HomeStates>{
           .then((value) {
         value.docs.forEach((element) {
           if(element.data()['uid'] != uid) {
+
             users.add(UserModel.fromJson(element.data()));
+
           }
 
         });
@@ -43,6 +49,7 @@ class HomeCubit extends Cubit<HomeStates>{
 
   }
   void getAllOneUsers() {
+    emit(GetAllUsersLoadingState());
 
     users.clear();
       FirebaseFirestore.instance
@@ -69,11 +76,15 @@ class HomeCubit extends Cubit<HomeStates>{
   }
 
 
-  String uuid=FirebaseAuth.instance.currentUser!.uid.toString();
+
+
+
+
 
   List<UserModel> chatUsers=[];
 
   void getChatUsers()   {
+    emit(GetChatUsersLoadingState());
 
     chatUsers.clear();
       FirebaseFirestore.instance
@@ -113,18 +124,94 @@ class HomeCubit extends Cubit<HomeStates>{
        .collection('users')
        .doc(uuid)
        .collection('chats')
-        .doc(userModel.uid)
-        .delete().then((value){
-     // emit(ChatUsersRemoveFirebaseSuccessState());
+       .doc(userModel.uid)
+        .collection('messages')
+        .get()
+        .then((val) async {
+     for (var doc in val.docs) {
+       await doc.reference.delete();
+     }
+
+     await FirebaseFirestore.instance
+         .collection('users')
+         .doc(uuid)
+         .collection('chats')
+         .doc(userModel.uid).delete();
+//delete from other user-------------------------------------------------
+     FirebaseFirestore.instance
+         .collection('users')
+         .doc(userModel.uid)
+         .collection('chats')
+         .doc(uuid)
+         .collection('messages')
+         .get()
+         .then((val) async {
+       for (var doc in val.docs) {
+         await doc.reference.delete();
+       }
+       await FirebaseFirestore.instance
+           .collection('users')
+           .doc(userModel.uid)
+           .collection('chats')
+           .doc(uuid).delete();
+         });
+
      getChatUsers();
 
-   }).catchError((error){
-     Fluttertoast.showToast(msg: error.toString());
-     // emit(ChatUsersRemoveFirebaseErrorState());
+
+
+   }).catchError((onError){
+      print(onError.toString());
    });
+
+     // FirebaseFirestore.instance
+     //     .collection('users')
+     //     .doc(userModel.uid)
+     //     .collection('chats')
+     //     .doc(uuid)
+     //      .delete();
+
+
+     // emit(ChatUsersRemoveFirebaseSuccessState());
+     // getChatUsers();
+
+
 
 
   }
+
+
+  void blockUser(UserModel userModel){
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uuid)
+        .collection('blocked')
+        .doc(userModel.uid)
+        .set({
+      'id': userModel.uid,
+    });
+
+
+
+  }
+
+
+  void reportViolation(UserModel userModel, String report){
+    FirebaseFirestore.instance
+        .collection('reports')
+        .doc()
+        .set({
+      'report maker': uuid,
+      'reported': userModel.uid,
+      'report body': report,
+
+    });
+
+
+
+  }
+
+
 
 
 

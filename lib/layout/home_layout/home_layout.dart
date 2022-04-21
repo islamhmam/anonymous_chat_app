@@ -181,23 +181,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         ),
 
 
-      //   MaterialButton(
-      //   color: Colors.blueAccent,
-      //   child: Text('Refresh',
-      //   style: TextStyle(
-      //     color: Colors.white,
-      //     fontWeight: FontWeight.bold,
-      //   ),
-      //   ),
-      //   onPressed: (){
-      //     setState(() {
-      //       HomeCubit.get(context).getChatUsers();
-      //       Fluttertoast.showToast(msg: 'Send a Message to any User');
-      //
-      //
-      //     });
-      //   },
-      // ),
+
 
       ) ,
 
@@ -226,32 +210,10 @@ class _HomeLayoutState extends State<HomeLayout> {
     child: Padding(
       padding: const EdgeInsets.all(20.0),
       child: Row(children: [
-        Stack(
-            alignment: AlignmentDirectional.bottomEnd,
-            children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundImage:  CachedNetworkImageProvider('${model.imageUrl}'),
+        CircleAvatar(
+          radius: 25,
+          backgroundImage:  CachedNetworkImageProvider('${model.imageUrl}'),
 
-          ),
-
-            //Active Circle
-            // Padding(
-            //   padding: const EdgeInsetsDirectional.only(
-            //     bottom: 0,
-            //     end: 0,),
-            //   child: CircleAvatar(
-            //     radius: 8.0,
-            //     backgroundColor: Colors.white,
-            //     child: CircleAvatar(
-            //       radius: 6.0,
-            //       backgroundColor: Colors.green,
-            //     ),
-            //   ),
-            // ),
-
-
-          ]
         ),
         SizedBox(width: 20,),
         Expanded(
@@ -299,12 +261,10 @@ class _HomeLayoutState extends State<HomeLayout> {
                         builder:(context1, state){
                           return AlertDialog(
                             title: Text('Confirm Deleting?'),
-                            content: Expanded(
-                              child: Text('This Will Delete All Message For Sender and Receiver!',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 10,
+                            content: Text('This Will Delete All Message For Sender and Receiver!',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 10,
 
-                              ),
                             ),
                             actions: [
                               MaterialButton(
@@ -357,13 +317,11 @@ class _HomeLayoutState extends State<HomeLayout> {
                         builder:(context1, state){
                           return AlertDialog(
                             title: Text('Describe Violation?'),
-                            content: Expanded(
-                              child: TextField(
-                                controller: reportController,
-                                minLines: 1,
-                                maxLines: 10,
+                            content: TextField(
+                              controller: reportController,
+                              minLines: 1,
+                              maxLines: 10,
 
-                              ),
                             ),
                             actions: [
 
@@ -435,12 +393,10 @@ class _HomeLayoutState extends State<HomeLayout> {
                         builder:(context1, state){
                           return AlertDialog(
                             title: Text('Confirm Block?'),
-                            content: Expanded(
-                              child: Text('Confirm Block!',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 10,
+                            content: Text('Confirm Block!',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 10,
 
-                              ),
                             ),
                             actions: [
                               MaterialButton(
@@ -488,67 +444,7 @@ class _HomeLayoutState extends State<HomeLayout> {
             ),
 
 
-        // IconButton(
-        //   onPressed: (){
-        //
-        //     showDialog(
-        //       context: context1,
-        //       builder: (context1) =>BlocProvider(
-        //         create: (context1) => HomeCubit(),
-        //         child: BlocConsumer<HomeCubit,HomeStates>(
-        //           listener: (context1, state) {
-        //           },
-        //           builder:(context1, state){
-        //             return AlertDialog(
-        //               title: Text('Confirm Deleting?'),
-        //               content: Expanded(
-        //                 child: Text('-- The Messages Will not be Deleted till The Other User Delete It Too.\n-- but The Conversation will be Deleted from last Chats Section.',
-        //                 overflow: TextOverflow.ellipsis,
-        //                   maxLines: 10,
-        //
-        //                 ),
-        //               ),
-        //               actions: [
-        //                 MaterialButton(
-        //                   onPressed: (){
-        //
-        //
-        //                       HomeCubit.get(context1).deleteChatItem( model);
-        //
-        //                       Fluttertoast.showToast(msg: 'Refresh the Page After Delete');
-        //
-        //                     Navigator.of(context).pop();
-        //                   },
-        //                   child: Text('Yes',
-        //                     style: TextStyle(
-        //                         color: Colors.white
-        //                     ),
-        //                   ),
-        //                   color: Colors.blueAccent,
-        //                 ),
-        //                 MaterialButton(
-        //
-        //                   onPressed: (){
-        //                     Navigator.of(context).pop();
-        //                   },
-        //                   child: Text('No',
-        //                     style: TextStyle(
-        //                         color: Colors.white
-        //                     ),
-        //                   ),
-        //                   color: Colors.blueAccent,
-        //                 ),
-        //               ],
-        //             );
-        //           } ,
-        //
-        //         ),
-        //       )
-        //     );
-        //   },
-        //   icon: Icon(Icons.delete_forever_rounded,
-        //   size: 30,),
-        // )
+
 
 
 

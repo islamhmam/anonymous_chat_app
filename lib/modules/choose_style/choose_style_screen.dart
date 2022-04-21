@@ -133,14 +133,12 @@ class ChooseStyleScreen extends StatelessWidget {
                             ]
                         ),
                         SizedBox(width: 20,),
-                        Expanded(
-                          child: Text('${StyleCubit.get(context).userModel!.name}',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                                fontWeight: FontWeight.w700
-                            ),),
-                        ),
+                        Text('${StyleCubit.get(context).userModel!.name}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                              fontWeight: FontWeight.w700
+                          ),),
 
 
                       ],
@@ -193,19 +191,17 @@ class ChooseStyleScreen extends StatelessWidget {
                         fallback:(context) => Center(child: CircularProgressIndicator(),) ,
                         builder: (context) =>Padding(
                           padding: const EdgeInsets.all(5.0),
-                          child: Expanded(
-                            child: GridView.count(
+                          child: GridView.count(
 
 
-                              crossAxisCount: 3,
-                              
-                              children: List.generate(StyleCubit.get(context).stylesList.length, (index) {
-                                return  buildStyle(StyleCubit.get(context).stylesList[index],context,index);
+                            crossAxisCount: 3,
 
-                              }),
-                              // physics: BouncingScrollPhysics() ,
+                            children: List.generate(StyleCubit.get(context).stylesList.length, (index) {
+                              return  buildStyle(StyleCubit.get(context).stylesList[index],context,index);
 
-                            ),
+                            }),
+                            // physics: BouncingScrollPhysics() ,
+
                           ),
                         ) ,
 

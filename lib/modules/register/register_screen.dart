@@ -64,32 +64,30 @@ class RegisterScreen extends StatelessWidget {
                   // #login, #welcome
                   Padding(
                     padding: const EdgeInsets.all(20),
-                    child: Expanded(
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 40,
-                            backgroundImage:  AssetImage('images/logo.png'),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundImage:  AssetImage('images/logo.png'),
 
+                        ),
+                        SizedBox(width: 10,),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const[
+                              Text("Register",style: TextStyle(color: Colors.white,fontSize: 40),),
+                              SizedBox(height: 10,),
+                              Text(
+                                "Your Gate to Private Chating",
+                                style: TextStyle(color: Colors.white,fontSize: 20),
+                                overflow: TextOverflow.ellipsis, // default is .clip
+                                maxLines: 4,
+                              ),
+                            ],
                           ),
-                          SizedBox(width: 10,),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const[
-                                Text("Register",style: TextStyle(color: Colors.white,fontSize: 40),),
-                                SizedBox(height: 10,),
-                                Text(
-                                  "Your Gate to Private Chating",
-                                  style: TextStyle(color: Colors.white,fontSize: 20),
-                                  overflow: TextOverflow.ellipsis, // default is .clip
-                                  maxLines: 4,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 20),

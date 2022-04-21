@@ -10,7 +10,7 @@ It uses [Firebase's](https://firebase.google.com) Authentication/FireStore/Dynam
 ![Preview](/preview/1.jpg)
 ![Preview](/preview/2.jpg)
 ![Preview](/preview/3.jpg)
-![Preview](/preview/4.jpg)
+![Preview](/preview/4.png)
 ![Preview](/preview/5.jpg)
 ![Preview](/preview/6.jpg)
 ![Preview](/preview/7.jpg)

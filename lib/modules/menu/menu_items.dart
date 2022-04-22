@@ -14,6 +14,9 @@ class MenuItems{
 static  List<MenuItem> SecondItemsMenu=[
     signOutItem
   ];
+static  List<MenuItem> UserPolicysMenu=[
+    userPolicy
+  ];
 
 static  List<MenuItem> userMenu=[
   removeChat,
@@ -34,6 +37,9 @@ static const MenuItem shareItem=  MenuItem(
 static const MenuItem signOutItem=  MenuItem(
        itemName: 'Sign Out',
        itemIcon: Icons.logout_sharp,);
+static const MenuItem userPolicy=  MenuItem(
+       itemName: 'User Policy',
+       itemIcon: Icons.supervised_user_circle,);
 
 
 

@@ -4,6 +4,7 @@ import 'package:anonymous/layout/home_layout/cubit/home_cubit.dart';
 import 'package:anonymous/models/menu_item.dart';
 import 'package:anonymous/modules/choose_style/choose_style_screen.dart';
 import 'package:anonymous/modules/menu/menu_items.dart';
+import 'package:anonymous/modules/user_policy/user_policy.dart';
 import 'package:anonymous/shared/components/components.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conditional_builder/conditional_builder.dart';
@@ -61,7 +62,10 @@ class _HomeLayoutState extends State<HomeLayout> {
                     itemBuilder: (context) =>[
                       ...MenuItems.firstItemsMenu.map(buildItem).toList(),
                       PopupMenuDivider(),
+                      ...MenuItems.UserPolicysMenu.map(buildItem).toList(),
+                      PopupMenuDivider(),
                       ...MenuItems.SecondItemsMenu.map(buildItem).toList(),
+                     
                     ],
                   ),
                 ],
@@ -476,6 +480,9 @@ class _HomeLayoutState extends State<HomeLayout> {
             break;
           case MenuItems.signOutItem:
             signOut(context);
+            break;
+            case MenuItems.userPolicy:
+            Navigator.push(context, MaterialPageRoute(builder: (context) => UserPolicy(),));
             break;
 
         }

@@ -20,3 +20,7 @@ class CreateUserErrorState extends RegisterStates{
   final String error;
   CreateUserErrorState(this.error);
 }
+
+
+
+class ChangePolicyState extends RegisterStates{}

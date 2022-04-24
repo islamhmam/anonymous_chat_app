@@ -14,6 +14,14 @@ class RegisterCubit extends Cubit<RegisterStates> {
 
   static RegisterCubit get(context) => BlocProvider.of(context);
 
+  bool isUserPolicyChecked=false;
+
+  void changeUserPolicy(bool value){
+
+    isUserPolicyChecked=value;
+    emit(ChangePolicyState());
+  }
+
 
   void userRegister({
     required String email,

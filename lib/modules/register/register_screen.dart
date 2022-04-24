@@ -177,6 +177,13 @@ class RegisterScreen extends StatelessWidget {
                                           isPassword: true,
                                           prefix: Icons.lock,)  ,
                                       ),
+                                      
+                                      SizedBox(height: 10,),
+                                      CheckboxListTile(
+                                          value:RegisterCubit.get(context).isUserPolicyChecked ,
+                                          onChanged: (value){
+                                            RegisterCubit.get(context).changeUserPolicy(value!);
+                                          }),
 
                                     ],
                                   ),
